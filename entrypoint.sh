@@ -31,6 +31,13 @@ function adjustPHP() {
     fi
 }
 
+function wordpressRewrite() {
+    nginxAvailSitesAddr="/etc/nginx/sites-available"
+    sed -i 's/# server_tokens = off/server_tokens = off' /etc/nginx/nginx.conf
+    sed -i 's!try_files $uri $uri/ =404;!try_files $uri $uri/ /index.php?$args;' $nginxAvailSitesAddr/default.conf
+    sed -i 's!try_files $uri $uri/ =404;!try_files $uri $uri/ /index.php?$args;' $nginxAvailSitesAddr/default-ssl.conf
+}
+
 initlock=$(cat /etc/nginx/init.lock 2>/dev/null || echo 0)
 
 if [ ! -z "$ssl" ] && [ ! -z "$domain" ] && [ $initlock -eq 0 ]; then
@@ -45,6 +52,9 @@ if [ ! -z "$ssl" ] && [ ! -z "$domain" ] && [ $initlock -eq 0 ]; then
                 installSSL "$domain" "/root/.acme.sh/$domain/fullchain.cer" "/root/.acme.sh/$domain/$domain.key"
                 echo "Done SSL installation."
                 adjustPHP
+                if [ $wordpress -eq "True"]; then
+                    wordpressRewrite
+                fi
                 echo "1" > /etc/nginx/init.lock
             else
                 echo "Certbot issue cert failed."
@@ -62,6 +72,9 @@ if [ ! -z "$ssl" ] && [ ! -z "$domain" ] && [ $initlock -eq 0 ]; then
             if [ -f /etc/nginx/ssl/server.crt ] && [ -f /etc/nginx/ssl/server.key ]; then
                 installSSL "$domain" "/etc/nginx/ssl/server.crt" "/etc/nginx/ssl/server.key"
                 echo "1" > /etc/nginx/init.lock
+                if [ $wordpress -eq "True"]; then
+                    wordpressRewrite
+                fi
                 echo "Done SSL installation."
             else
                 echo "Cannot find certificate or key."
@@ -76,6 +89,9 @@ else
         echo "Skip SSL installation."
         sed -i "s/_domain_/$domain/g" /etc/nginx/sites-available/default.conf
         adjustPHP
+        if [ $wordpress -eq "True"]; then
+            wordpressRewrite
+        fi
         echo "1" > /etc/nginx/init.lock
     fi
 fi
@@ -88,5 +104,5 @@ fi
 echo "Starting Environment..."
 /etc/init.d/php8.3-fpm start
 cron &
-nginx -g "daemon off;"
 echo "Nginx and PHP are started"
+nginx -g "daemon off;"
