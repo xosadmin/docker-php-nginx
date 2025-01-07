@@ -38,7 +38,7 @@ COPY entrypoint.sh /
 RUN chmod a+x /entrypoint.sh
 
 RUN rm -f /etc/nginx/sites-enabled/default && \
-    ln -s /etc/nginx/sites-enabled/default /etc/nginx/sites-available/default.conf
+    ln -s /etc/nginx/sites-available/default.conf /etc/nginx/sites-enabled/default
 
 EXPOSE 80 443
 
