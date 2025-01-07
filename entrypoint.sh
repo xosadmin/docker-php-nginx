@@ -12,8 +12,8 @@ function installSSL() {
     ln -s $nginxAvailSitesAddr/default-ssl.conf $nginxEnabledSitesAddr/default-ssl
 
     sed -i "s/_domain_/$domain/g" $nginxAvailSitesAddr/default-ssl.conf
-    sed -i "s|_ssl_certificate_|$cert|g" $nginxAvailSitesAddr/default-ssl.conf
-    sed -i "s/_ssl_certificate_key_/$key/g" $nginxAvailSitesAddr/default-ssl.conf
+    sed -i "s@_ssl_certificate_@$cert@g" $nginxAvailSitesAddr/default-ssl.conf
+    sed -i "s@_ssl_certificate_key_@$key@g" $nginxAvailSitesAddr/default-ssl.conf
 }
 
 function adjustPHP() {
