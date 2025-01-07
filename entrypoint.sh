@@ -2,18 +2,22 @@
 
 function installSSL() {
     domain=$1
-    cert=$2
-    key=$3
+    certaddr=$2
+    keyaddr=$3
 
     nginxEnabledSitesAddr="/etc/nginx/sites-enabled"
     nginxAvailSitesAddr="/etc/nginx/sites-available"
 
-    rm -f $nginxEnabledSitesAddr/default
-    ln -s $nginxAvailSitesAddr/default-ssl.conf $nginxEnabledSitesAddr/default-ssl
+    if [ -f $nginxEnabledSitesAddr/default ]; then
+        rm -f $nginxEnabledSitesAddr/default
+    fi
+    if [ ! -e $nginxEnabledSitesAddr/default-ssl ]; then
+        ln -s $nginxAvailSitesAddr/default-ssl.conf $nginxEnabledSitesAddr/default-ssl
+    fi
 
     sed -i "s/_domain_/$domain/g" $nginxAvailSitesAddr/default-ssl.conf
-    sed -i "s@_ssl_certificate_@$cert@g" $nginxAvailSitesAddr/default-ssl.conf
-    sed -i "s@_ssl_certificate_key_@$key@g" $nginxAvailSitesAddr/default-ssl.conf
+    sed -i "s@#ssl_certificate#@$certaddr@g" $nginxAvailSitesAddr/default-ssl.conf
+    sed -i "s@#ssl_certificate_key#@$keyaddr@g" $nginxAvailSitesAddr/default-ssl.conf
 }
 
 function adjustPHP() {
@@ -59,7 +63,7 @@ if [ ! -z "$ssl" ] && [ ! -z "$domain" ] && [ $initlock -eq 0 ]; then
                 installSSL "$domain" "/etc/nginx/ssl/server.crt" "/etc/nginx/ssl/server.key"
                 echo "Done SSL installation."
             else
-                echo "Cannot find certificate."
+                echo "Cannot find certificate or key."
                 exit 1
             fi
         fi
