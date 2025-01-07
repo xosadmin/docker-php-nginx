@@ -8,7 +8,7 @@ Optional environment variable(s):
 - ssl=True # Enable SSL support
 - email=<your-email> # Optional, only required if intended to use Let's Encrypt
 - ``-v /path/to/ssl/dir:/etc/nginx/ssl`` # Map the folder that contains SSL certificate and key to container. The SSL certificate and key must named as ``server.crt`` and ``server.key``.  
-Notes: 
+## Notes: 
 - If ``email`` is specified, Nginx will not adopt SSL certificate in the mapped folder.  
 - If wants to allow all domains, use ``_`` for ``domain`` environment variable
   
