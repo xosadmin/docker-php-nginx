@@ -34,8 +34,8 @@ function adjustPHP() {
 function wordpressRewrite() {
     nginxAvailSitesAddr="/etc/nginx/sites-available"
     sed -i 's/# server_tokens = off/server_tokens = off' /etc/nginx/nginx.conf
-    sed -i 's!try_files $uri $uri/ =404;!try_files $uri $uri/ /index.php?$args;' $nginxAvailSitesAddr/default.conf
-    sed -i 's!try_files $uri $uri/ =404;!try_files $uri $uri/ /index.php?$args;' $nginxAvailSitesAddr/default-ssl.conf
+    sed -i "s!try_files \$uri \$uri/ =404;!try_files \$uri \$uri/ /index.php?\$args;!" $nginxAvailSitesAddr/default.conf
+    sed -i "s!try_files \$uri \$uri/ =404;!try_files \$uri \$uri/ /index.php?\$args;!" $nginxAvailSitesAddr/default-ssl.conf
 }
 
 initlock=$(cat /etc/nginx/init.lock 2>/dev/null || echo 0)
