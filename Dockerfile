@@ -7,13 +7,12 @@ RUN apt update -y --fix-missing && \
     ca-certificates \
     wget curl \
     gnupg2 \
-    lsb-release \
     apt-transport-https \
     vim \
     cron
 
 RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg >/dev/null 2>&1 && \
-    echo "deb https://packages.sury.org/php/ $(lsb_release -c -s) main" > /etc/apt/sources.list.d/php.list
+    echo "deb https://packages.sury.org/php/ bullseye main" > /etc/apt/sources.list.d/php.list
 
 RUN apt install nginx -y && \
     apt-get install php8.3 \
