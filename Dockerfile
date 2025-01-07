@@ -14,6 +14,8 @@ RUN apt update -y --fix-missing && \
 RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg >/dev/null 2>&1 && \
     echo "deb https://packages.sury.org/php/ bullseye main" > /etc/apt/sources.list.d/php.list
 
+RUN apt update -y
+
 RUN apt install nginx -y && \
     apt-get install php8.3 \
     php8.3-cli php8.3-cgi php8.3-fpm \
