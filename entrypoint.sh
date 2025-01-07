@@ -84,6 +84,6 @@ if [ ! -d /var/www/html ]; then
     chmod -R 755 /var/www/html
 fi
 
-php-fpm8.3 -F &
+/etc/init.d/php8.3-fpm start
 cron &
 nginx -g "daemon off;"
