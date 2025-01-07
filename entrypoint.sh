@@ -89,4 +89,4 @@ echo "Starting Environment..."
 /etc/init.d/php8.3-fpm start
 cron &
 nginx -g "daemon off;"
-echo "Nginx is started"
+echo "Nginx and PHP are started"
