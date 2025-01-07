@@ -61,6 +61,7 @@ if [ ! -z "$ssl" ] && [ ! -z "$domain" ] && [ $initlock -eq 0 ]; then
         else
             if [ -f /etc/nginx/ssl/server.crt ] && [ -f /etc/nginx/ssl/server.key ]; then
                 installSSL "$domain" "/etc/nginx/ssl/server.crt" "/etc/nginx/ssl/server.key"
+                echo "1" > /etc/nginx/init.lock
                 echo "Done SSL installation."
             else
                 echo "Cannot find certificate or key."
@@ -84,6 +85,8 @@ if [ ! -d /var/www/html ]; then
     chmod -R 755 /var/www/html
 fi
 
+echo "Starting Environment..."
 /etc/init.d/php8.3-fpm start
 cron &
 nginx -g "daemon off;"
+echo "Nginx is started"
