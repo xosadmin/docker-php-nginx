@@ -52,7 +52,7 @@ if [ ! -z "$ssl" ] && [ ! -z "$domain" ] && [ $initlock -eq 0 ]; then
                 installSSL "$domain" "/root/.acme.sh/$domain/fullchain.cer" "/root/.acme.sh/$domain/$domain.key"
                 echo "Done SSL installation."
                 adjustPHP
-                if [ $wordpress == "True" ]; then
+                if [[ $wordpress == "True" ]]; then
                     wordpressRewrite
                 fi
                 echo "1" > /etc/nginx/init.lock
@@ -72,7 +72,7 @@ if [ ! -z "$ssl" ] && [ ! -z "$domain" ] && [ $initlock -eq 0 ]; then
             if [ -f /etc/nginx/ssl/server.crt ] && [ -f /etc/nginx/ssl/server.key ]; then
                 installSSL "$domain" "/etc/nginx/ssl/server.crt" "/etc/nginx/ssl/server.key"
                 echo "1" > /etc/nginx/init.lock
-                if [ $wordpress == "True" ]; then
+                if [[ $wordpress == "True" ]]; then
                     wordpressRewrite
                 fi
                 echo "Done SSL installation."
@@ -89,7 +89,7 @@ else
         echo "Skip SSL installation."
         sed -i "s/_domain_/$domain/g" /etc/nginx/sites-available/default.conf
         adjustPHP
-        if [ $wordpress == "True" ]; then
+        if [[ $wordpress == "True" ]]; then
             wordpressRewrite
         fi
         echo "1" > /etc/nginx/init.lock
