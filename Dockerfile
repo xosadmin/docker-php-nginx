@@ -9,6 +9,7 @@ RUN apt update -y --fix-missing && \
     gnupg2 \
     apt-transport-https \
     vim \
+    socat \
     cron
 
 RUN wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg >/dev/null 2>&1 && \
